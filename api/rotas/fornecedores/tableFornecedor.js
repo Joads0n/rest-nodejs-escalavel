@@ -1,4 +1,5 @@
 const Model = require("./modelTabFornecedor")
+const NaoEncontrado = require('../../erros/NaoEcontrado')
 
 module.exports = {
     listar () {
@@ -15,7 +16,7 @@ module.exports = {
         })
 
         if (!encontrado){
-            throw new Error('Fornecedor não encontrato')
+            throw new NaoEncontrado()
         }
         return encontrado
     },

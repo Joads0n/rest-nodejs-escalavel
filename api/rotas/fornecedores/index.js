@@ -8,7 +8,7 @@ roteador.get('/', async (req, res) => {
     res.send(JSON.stringify(resultados))
 })
 
-roteador.post('/', async (req, res) => {
+roteador.post('/', async (req, res, proximo) => {
     try{
         const dadosRecebidos = req.body
         const fornecedor = new Fornecedor(dadosRecebidos)
@@ -16,8 +16,7 @@ roteador.post('/', async (req, res) => {
         res.status(201)
         res.send(JSON.stringify(fornecedor))
     } catch (err){
-        res.status(400)
-        res.send(JSON.stringify({message: err.message}))
+        proximo(err)
     }
 })
 
@@ -29,12 +28,11 @@ roteador.get('/:idFornecedor', async (req, res) => {
         res.status(200)
         res.send(JSON.stringify(fornecedor))
     } catch (err) {
-        res.status(404)
-        res.send(JSON.stringify({message: err.message}))
+        proximo(err)
     }
 })
 
-roteador.put('/:idFornecedor', async (req, res) => {
+roteador.put('/:idFornecedor', async (req, res, proximo) => {
     try {
         const id = req.params.idFornecedor
         const dadosRecebidos = req.body
@@ -44,8 +42,7 @@ roteador.put('/:idFornecedor', async (req, res) => {
         res.status(204)
         res.end()
     } catch (err) {
-        res.status(400)
-        res.send(JSON.stringify({message: err.message}))
+        proximo(err)
     }
 })
 
@@ -58,8 +55,7 @@ roteador.delete('/:idFornecedor', async (req, res) => {
         res.status(204)
         res.end()
     } catch (err){
-        res.status(404)
-        res.send(JSON.stringify({message: err.message}))
+        proximo(err)
     }
 })
 
