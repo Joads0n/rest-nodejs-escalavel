@@ -7,8 +7,26 @@ const NaoEncontrado = require('./erros/NaoEcontrado')
 const CampoInvalido = require('./erros/NaoEcontrado')
 const DadosNaoFornecidos = require('./erros/DadosNaoFornecidos')
 const ValorNaoSuportado = require('./erros/ValorNaoSuportado')
+const { application } = require('express')
+const formatosAceitos = require('./Serializador').formatosAceitos
 
 app.use(bodyParser.json())
+
+app.use((req, res, next) => {
+    let formatoRequisitado = req.header('Accept')
+
+    if(formatoRequisitado === '*/*'){
+        formatoRequisitado = 'application/json'
+    }
+
+    if(formatosAceitos.indexOf(formatoRequisitado) === -1){
+        res.status(406)
+        res.end()
+        return
+    }
+    res.setHeader('Content-Type', formatoRequisitado)
+    next()
+})
 
 app.use('/api/fornecedores', roteador)
 
