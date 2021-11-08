@@ -29,7 +29,7 @@ roteador.get('/:idFornecedor', async (req, res) => {
         const fornecedor = new Fornecedor({id: id})
         await fornecedor.carregar()
         res.status(200)
-        const serializador = new SerializadorFornecedor(res.getHeader('Content-Type'))
+        const serializador = new SerializadorFornecedor(res.getHeader('Content-Type'), ['email', 'dataCriacao', 'dataAtualizacao', 'versao'])
         res.send(serializador.serializar(fornecedor))
     } catch (err) {
         proximo(err)
